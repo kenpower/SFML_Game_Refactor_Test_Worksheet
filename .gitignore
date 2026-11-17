@@ -368,3 +368,6 @@ out/
 cmake-build-*/
 CMakeUserPresets.json
 
+
+# Claude Code instructions for maintainers are kept in the private instructor repository
+CLAUDE.md
