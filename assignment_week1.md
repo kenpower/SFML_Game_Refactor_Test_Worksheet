@@ -174,7 +174,7 @@ Start with the easy general ones in the lab (`rename`, `constant`, `explain-var`
 | **`state-out-of-sfml`** | Keep game state in your own variables, not in SFML objects | Hidden state | A position read back with `sprite.getPosition()` → your own `x`, `y` |
 | **`input-data`** | Turn input into plain data | Input mixed with rules | `Keyboard::isKeyPressed` inside the rules → `bool left` read once per frame |
 | **`inject`** | Pass in time or randomness | Hidden dependency | `rand()` inside the rules → a value chosen outside and passed in |
-| **`sfml-type`** | Replace an SFML type in the rules with your own | SFML in the rules | `sf::FloatRect` → `plain::Rect` from `PlainTypes.h`; `sf::Vector2i` → `plain::Point` |
+| **`sfml-type`** | Replace an SFML type in the rules with your own | SFML in the rules | `sf::FloatRect` → `geom::Rect` from `Geometry.h`; `sf::Vector2i` → `geom::Point` |
 | **`de-global`** | Make a function take what it needs, instead of reading a global | Hidden dependency | `bool check()` reads the global `field` → `bool check(const Field& field, ...)` |
 | `other` | Other sensible refactorings | — | It still counts even if you don't know the refactoring's name |
 

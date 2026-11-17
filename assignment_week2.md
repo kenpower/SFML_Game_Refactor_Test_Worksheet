@@ -76,7 +76,7 @@ Your class must:
 - [ ] Be used by the game, which still plays exactly as before. Run your manual test script.
 - [ ] Compile in the `Tests` project.
 
-If you need positions or rectangles, use `plain::Point`, `plain::Vec2f` and `plain::Rect` (with `plain::overlaps()`) from `16_SFML_Games/PlainTypes.h`, not the SFML types.
+If you need positions or rectangles, use `geom::Point`, `geom::Vec2f` and `geom::Rect` (with `geom::overlaps()`) from `16_SFML_Games/Geometry.h`, not the SFML types.
 
 Search your header for `SFML`, `rand`, `time`, `Clock` and `Keyboard`. None of them should appear. The compiler checks the rest: the test project doesn't link SFML, so if your class pulls in SFML, the tests won't compile.
 
