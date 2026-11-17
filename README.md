@@ -1,36 +1,47 @@
 # SFML Game Refactor & Test Worksheet
 
-Five small classic games written in C++17 with [SFML 3](https://www.sfml-dev.org/), behind one text-menu launcher: Tetris, Minesweeper, Tron, Netwalk and Xonix. This repository is cut down from [16_SFML_Games](https://github.com/kenpower/16_SFML_Games).
+This is your starter code for the three-week project. It has five small classic games written in C++17 with [SFML 3](https://www.sfml-dev.org/): **Tetris, Minesweeper, Tron, Netwalk and Xonix**. You start them all from one text menu.
 
-The games work, but most of them are written as one long loop that mixes the game's rules with graphics, keyboard, time and random numbers. That makes them good material for learning to **read, refactor and test unfamiliar code**, which is what this repository is used for.
+The games work, but most of them do everything in one long loop: they read the keyboard, apply the game's rules, use the clock and random numbers, and draw, all mixed together. Over the next three weeks you will pick **one** game and:
+
+1. **read** it until you understand how it works,
+2. **refactor** it in small, safe steps,
+3. **split** its rules away from the graphics, so they can be tested,
+4. **test** those rules with unit tests,
+5. **add a new feature**, test first.
 
 ## Start here
 
+1. Read the project brief, **[assignment.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment.md)**, then **[week 1](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week1.md)**.
+2. Build the project and run the tests (see [Build and test](#build-and-test) below).
+3. Fill in your notes as you go, in [NOTES.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/NOTES.md).
+
 | Document | What it is |
 |----------|------------|
-| [assignment.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment.md) | **The project brief**: a three-week solo project to refactor, test and extend one game. Overview, marking, rules and tags. |
+| [assignment.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment.md) | **The project brief**: what you'll learn, marking, rules, and the tags you push |
 | [assignment_week1.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week1.md) | Week 1: understand your game and refactor it towards a seam |
 | [assignment_week2.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week2.md) | Week 2 *(draft)*: split the game at the seam and test it |
 | [assignment_week3.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week3.md) | Week 3 *(draft)*: add a feature, test first |
-| [seams_lecture_notes.md](https://github.com/kenpower/split-at-the-seam/blob/main/seams_lecture_notes.md) | Lecture notes: what a seam is, why you split an app there, how to find it, and why `rand()`, the clock and the keyboard stay outside |
-| [howto_split.md](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split.md) | Step-by-step worked example: splitting **Catcher**, a small game made for this purpose, into an SFML-free class and testing it |
-| [NOTES.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/NOTES.md) | The template students fill in during the project, with a section for every note the briefs ask for |
-| [GIT_CHEATSHEET.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/GIT_CHEATSHEET.md) | One-page git card: commit, push, tags, undo, in Visual Studio and on the command line |
-| [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md) | Full setup, build, run and test instructions for Windows, Linux and macOS |
+| [NOTES.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/NOTES.md) | Your notes for the project. Every section you need is already there, with a prompt. |
+| [GIT_CHEATSHEET.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/GIT_CHEATSHEET.md) | How to commit, push, tag and undo, in Visual Studio and on the command line |
+| [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md) | Full setup, build, run and test instructions, if the quick version below isn't enough |
 
-## The seams lecture notes and the Catcher example
+## Lecture notes and the worked example
 
-The lecture notes on seams and the worked example are in their own repository, **[split-at-the-seam](https://github.com/kenpower/split-at-the-seam)**. Catcher (move a basket, catch falling fruit) is not one of these games. It shows the method without giving away an answer: the tangled version with a seam map in every line, one complete program per refactoring step, and the finished split with unit tests.
+The lecture notes and a worked example are in a separate repository, **[split-at-the-seam](https://github.com/kenpower/split-at-the-seam)**:
 
-## Build and test (quick version)
+- **[seams_lecture_notes.md](https://github.com/kenpower/split-at-the-seam/blob/main/seams_lecture_notes.md):** what a "seam" is, how to find one, and why `rand()`, the clock and the keyboard stay outside the code you test.
+- **[howto_split.md](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split.md):** a step-by-step split of **Catcher**, a small game (move a basket, catch falling fruit) made to show the method. Catcher has one complete program for each step, so you can compare what changed. Follow the same steps on your own game.
 
-SFML 3 and GoogleTest are downloaded on the first configure if they aren't installed. See [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md) for details, including Linux packages.
+## Build and test
+
+SFML 3 and GoogleTest are downloaded the first time you configure, if they aren't already installed. If anything here doesn't work, see [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md), or ask in the lab.
 
 ### Visual Studio (Windows)
 
 Use the IDE, not the command line. You need Visual Studio 2022 with the **Desktop development with C++** workload, which includes CMake and the GoogleTest test adapter.
 
-1. **Open:** *File → Open → Folder…* and pick this repository's folder. Visual Studio reads `CMakePresets.json` and configures the project. Wait for "CMake generation finished" in the Output window.
+1. **Open:** *File → Open → Folder…* and pick your repository's folder. Visual Studio reads `CMakePresets.json` and configures the project. Wait for "CMake generation finished" in the Output window.
 2. **Choose a configuration:** pick **Debug** in the configuration drop-down on the toolbar.
 3. **Build:** *Build → Build All*.
 4. **Run or debug a game:** choose **sfml_refactor_lab.exe** in the *Select Startup Item* drop-down next to the green ▶ button, then press **F5**. If the game's images don't load, the debugger is running it from the wrong folder (see [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md#visual-studio)).
@@ -48,26 +59,29 @@ ctest --test-dir build -C Release --output-on-failure    # run the tests again
 
 In VS Code, use the CMake Tools extension: pick a preset, then use its Build, Debug and Test buttons in the status bar.
 
-### Running the launcher
+### Playing the games
 
-**Run the launcher from its own folder** (`build/bin`, or `build-debug/bin` for Debug). The games load images with relative paths. Type the capital letter in a game's name (e.g. `T` for Tetris) to start it, and close its window to return to the menu.
+**Run the launcher from its own folder** (`build/bin`, or `build-debug/bin` for Debug), because the games load their images with relative paths. Type the capital letter in a game's name (e.g. `T` for Tetris) to start it, and close its window to return to the menu.
 
 ## Where things are
 
 | Path | What's there |
 |------|--------------|
-| `16_SFML_Games/` | One `.cpp` file per game (five games), the launcher (`16_SFML_Games.cpp`), and SFML-free classes that tests can use: `Grid.h` and `Player.h` (the Xonix worked example) and `Geometry.h` (`Point`, `Vec2f`, `Rect` for your own classes) |
-| `16_SFML_Games/images/` | Game assets, copied next to the executable when you build |
-| `Tests/` | Unit tests. `test.cpp` tests the Xonix classes, and `geometry_test.cpp` tests `Geometry.h`. There is one file for each of the four assignment games (`tetris_test.cpp`, `minesweeper_test.cpp`, `tron_test.cpp`, `netwalk_test.cpp`). Each one tests the placeholder `name()` of the game's empty class (`TetrisBoard.h`, `MineField.h`, `TronArena.h`, `PipeGrid.h`). The tests don't link SFML. |
+| `16_SFML_Games/` | One `.cpp` file per game, and the launcher (`16_SFML_Games.cpp`) |
+| `16_SFML_Games/TetrisBoard.h`, `MineField.h`, `TronArena.h`, `PipeGrid.h` | An empty class for each game. In week 2, your game's rules move into its class. |
+| `16_SFML_Games/Geometry.h` | `geom::Point`, `geom::Vec2f`, `geom::Rect` and `geom::overlaps()`. Use these in your class instead of SFML's types. |
+| `16_SFML_Games/Grid.h`, `Player.h` | Xonix's rules, already split from SFML. This is an example of what you're aiming for. |
+| `16_SFML_Games/images/` | The games' images, copied next to the program when you build |
+| `Tests/` | Unit tests. There is one file for each game you can choose (e.g. `tetris_test.cpp`): your tests go in that one. `test.cpp` tests Xonix's classes and `geometry_test.cpp` tests `Geometry.h`, so you can look at them for examples. |
 
 ### Reading the game code
 
-The game files carry signpost comments to help you find your way around:
+The game files have comments to help you find your way around:
 
-- `// ===== GUIDE` at the top: where to start reading and what state survives between frames
+- `// ===== GUIDE` at the top: where to start reading, what state survives between frames, and the refactorings to look for
 - `// ---- SETUP / INPUT / UPDATE / DRAW ----`: the big jobs in each game loop
 - `// HINT:` things worth looking at closely, often with the debugger
 
-### Continuous integration
+### The ✔ or ✘ on GitHub
 
-Every push runs two GitHub checks: the unit tests on Linux, without SFML, and a full game build on Windows. You can see the result as a ✔ or ✘ next to each commit.
+Every time you push, GitHub builds your code and runs your tests, using two checks: the unit tests on Linux (without SFML), and a full build of the games on Windows. You can see the result as a ✔ or ✘ next to each commit. A ✘ on the unit tests usually means your class has picked up SFML or doesn't compile.
