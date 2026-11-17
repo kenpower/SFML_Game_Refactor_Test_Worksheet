@@ -1,4 +1,4 @@
-# SFML Refactor Lab
+# SFML Game Refactor & Test Worksheet
 
 Five small classic games written in C++17 with [SFML 3](https://www.sfml-dev.org/), behind one text-menu launcher: Tetris, Minesweeper, Tron, Netwalk and Xonix. This repository is cut down from [16_SFML_Games](https://github.com/kenpower/16_SFML_Games).
 
@@ -8,15 +8,15 @@ The games work, but most of them are written as one long loop that mixes the gam
 
 | Document | What it is |
 |----------|------------|
-| [assignment.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment.md) | **The project brief**: a three-week solo project to refactor, test and extend one game. Overview, marking, rules and tags. |
-| [assignment_week1.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment_week1.md) | Week 1: understand your game and refactor it towards a seam |
-| [assignment_week2.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment_week2.md) | Week 2 *(draft)*: split the game at the seam and test it |
-| [assignment_week3.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment_week3.md) | Week 3 *(draft)*: add a feature, test first |
+| [assignment.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment.md) | **The project brief**: a three-week solo project to refactor, test and extend one game. Overview, marking, rules and tags. |
+| [assignment_week1.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week1.md) | Week 1: understand your game and refactor it towards a seam |
+| [assignment_week2.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week2.md) | Week 2 *(draft)*: split the game at the seam and test it |
+| [assignment_week3.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week3.md) | Week 3 *(draft)*: add a feature, test first |
 | [seams_lecture_notes.md](https://github.com/kenpower/split-at-the-seam/blob/main/seams_lecture_notes.md) | Lecture notes: what a seam is, why you split an app there, how to find it, and why `rand()`, the clock and the keyboard stay outside |
 | [howto_split.md](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split.md) | Step-by-step worked example: splitting **Catcher**, a small game made for this purpose, into an SFML-free class and testing it |
-| [NOTES.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/NOTES.md) | The template students fill in during the project, with a section for every note the briefs ask for |
-| [GIT_CHEATSHEET.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/GIT_CHEATSHEET.md) | One-page git card: commit, push, tags, undo, in Visual Studio and on the command line |
-| [BUILDING.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/BUILDING.md) | Full setup, build, run and test instructions for Windows, Linux and macOS |
+| [NOTES.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/NOTES.md) | The template students fill in during the project, with a section for every note the briefs ask for |
+| [GIT_CHEATSHEET.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/GIT_CHEATSHEET.md) | One-page git card: commit, push, tags, undo, in Visual Studio and on the command line |
+| [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md) | Full setup, build, run and test instructions for Windows, Linux and macOS |
 
 ## The seams lecture notes and the Catcher example
 
@@ -24,7 +24,7 @@ The lecture notes on seams and the worked example are in their own repository, *
 
 ## Build and test (quick version)
 
-SFML 3 and GoogleTest are downloaded on the first configure if they aren't installed. See [BUILDING.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/BUILDING.md) for details, including Linux packages.
+SFML 3 and GoogleTest are downloaded on the first configure if they aren't installed. See [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md) for details, including Linux packages.
 
 ### Visual Studio (Windows)
 
@@ -33,7 +33,7 @@ Use the IDE, not the command line. You need Visual Studio 2022 with the **Deskto
 1. **Open:** *File → Open → Folder…* and pick this repository's folder. Visual Studio reads `CMakePresets.json` and configures the project. Wait for "CMake generation finished" in the Output window.
 2. **Choose a configuration:** pick **Debug** in the configuration drop-down on the toolbar.
 3. **Build:** *Build → Build All*.
-4. **Run or debug a game:** choose **sfml_refactor_lab.exe** in the *Select Startup Item* drop-down next to the green ▶ button, then press **F5**. If the game's images don't load, the debugger is running it from the wrong folder (see [BUILDING.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/BUILDING.md#visual-studio)).
+4. **Run or debug a game:** choose **sfml_refactor_lab.exe** in the *Select Startup Item* drop-down next to the green ▶ button, then press **F5**. If the game's images don't load, the debugger is running it from the wrong folder (see [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md#visual-studio)).
 5. **Test:** *Test → Test Explorer*, then **Run All Tests** (▶▶). Every test appears in a tree. Double-click a failing test to go to it. To debug a test, right-click it and choose **Debug**.
 
 ### Command line (Linux, macOS, or Windows without Visual Studio)

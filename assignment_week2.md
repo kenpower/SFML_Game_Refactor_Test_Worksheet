@@ -2,7 +2,7 @@
 
 > **DRAFT – this brief may change before session 2.** It shows the plan so you can see where week 1 is heading. Numbers, timings and marks are not final. This notice is removed when the brief is final.
 
-Part of the three-week project **Refactor, test and extend an SFML game**. See [assignment.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment.md) for the overview, marking and rules.
+Part of the three-week project **Refactor, test and extend an SFML game**. See [assignment.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment.md) for the overview, marking and rules.
 
 > **Goal:** by the end of this week, *my game's rules live in a tested class with no SFML.*
 >
@@ -41,7 +41,7 @@ You also get a short sheet of example rows for your game. Use them if you can't 
 
 If you finish early, carry on with the home steps.
 
-During the lab, the only AI tool allowed is [cs50.ai/chat](https://cs50.ai/chat)[^duck], for technical questions. See the AI rule in [assignment.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment.md#rules).
+During the lab, the only AI tool allowed is [cs50.ai/chat](https://cs50.ai/chat)[^duck], for technical questions. See the AI rule in [assignment.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment.md#rules).
 
 ## At home
 

@@ -1,6 +1,6 @@
 # Building, running and testing
 
-Full setup instructions for the SFML Refactor Lab project. For a short version, see the [README](https://github.com/kenpower/sfml-refactor-lab/blob/main/README.md).
+Full setup instructions for the SFML Game Refactor & Test Worksheet project. For a short version, see the [README](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/README.md).
 
 ## Requirements
 

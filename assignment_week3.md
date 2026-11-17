@@ -2,7 +2,7 @@
 
 > **DRAFT – this brief may change before session 3.** It shows the plan so you can see where the project is heading. Timings and marks are not final. This notice is removed when the brief is final.
 
-Part of the three-week project **Refactor, test and extend an SFML game**. See [assignment.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment.md) for the overview, marking and rules.
+Part of the three-week project **Refactor, test and extend an SFML game**. See [assignment.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment.md) for the overview, marking and rules.
 
 > **Goal:** by the end of this week, *I have added a new feature to my class, test first.*
 >
@@ -35,7 +35,7 @@ You also get a short list of options for your game (for example, for Tetris: cou
 
 The times are a guide. The **order** is what matters: the failing tests must be committed before the code that makes them pass.
 
-During the lab, the only AI tool allowed is [cs50.ai/chat](https://cs50.ai/chat)[^duck], for technical questions. See the AI rule in [assignment.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment.md#rules).
+During the lab, the only AI tool allowed is [cs50.ai/chat](https://cs50.ai/chat)[^duck], for technical questions. See the AI rule in [assignment.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment.md#rules).
 
 ---
 

@@ -8,9 +8,9 @@ This is a **solo** project that runs for **three weeks**, with **one 100-minute 
 
 | Week  | Brief                                      | Goal: by the end of the week...                                       | In the lab                                           |
 | ----- | ------------------------------------------ | --------------------------------------------------------------------- | ---------------------------------------------------- |
-| **1** | [assignment_week1.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment_week1.md) | **...I understand my game, and I have refactored it towards a seam.** | Build and debug check-off. Start refactoring.        |
-| **2** | [assignment_week2.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment_week2.md) *(draft)* | **...my game's rules live in a tested class with no SFML.**           | **Test task**, given at the start of the session.    |
-| **3** | [assignment_week3.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/assignment_week3.md) *(draft)* | **...I have added a new feature to my class, test first.**            | **Feature task**, given at the start of the session. |
+| **1** | [assignment_week1.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week1.md) | **...I understand my game, and I have refactored it towards a seam.** | Build and debug check-off. Start refactoring.        |
+| **2** | [assignment_week2.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week2.md) *(draft)* | **...my game's rules live in a tested class with no SFML.**           | **Test task**, given at the start of the session.    |
+| **3** | [assignment_week3.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/assignment_week3.md) *(draft)* | **...I have added a new feature to my class, test first.**            | **Feature task**, given at the start of the session. |
 
 > **The week 2 and week 3 briefs are drafts.** They show the plan, so you can see where week 1 is heading, but details (including the numbers of tests and the marking) may change. Check back before each session: the draft notice is removed when a brief is final.
 
@@ -67,7 +67,7 @@ You push a tag[^tag] at two points each week:
 | `session1`, `session2`, `session3` | at the **end of each lab session**, before you leave | what you did in the lab. The in-lab tasks are marked from `session2` and `session3`. |
 | `week1`, `week2` | **before the next session** starts | what you did at home |
 
-To tag and push (replace `session1` with the tag you need). [GIT_CHEATSHEET.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/GIT_CHEATSHEET.md) has these commands, how to check a tag reached GitHub, and how to fix a wrong tag:
+To tag and push (replace `session1` with the tag you need). [GIT_CHEATSHEET.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/GIT_CHEATSHEET.md) has these commands, how to check a tag reached GitHub, and how to fix a wrong tag:
 
 ```sh
 git push
@@ -106,6 +106,6 @@ At the end of week 3, you will be asked to fill in a short **self-assessment** f
 
 ---
 
-[^tag]: A **git tag** is a name, like `session1`, attached to one commit, like a bookmark. It records exactly what your repository looked like at that moment, even after you make more commits, so it is what the markers look at. `git push` on its own does **not** send tags to GitHub: push each one with `git push origin <tag>`. See [GIT_CHEATSHEET.md](https://github.com/kenpower/sfml-refactor-lab/blob/main/GIT_CHEATSHEET.md).
+[^tag]: A **git tag** is a name, like `session1`, attached to one commit, like a bookmark. It records exactly what your repository looked like at that moment, even after you make more commits, so it is what the markers look at. `git push` on its own does **not** send tags to GitHub: push each one with `git push origin <tag>`. See [GIT_CHEATSHEET.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/GIT_CHEATSHEET.md).
 
 [^duck]: You sign in to cs50.ai with a **GitHub account**. Use the same account you use for this project, and check you can sign in before your first lab.
