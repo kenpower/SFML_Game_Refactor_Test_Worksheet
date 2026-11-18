@@ -1,7 +1,5 @@
 # Project: Refactor, test and extend an SFML game
 
-Get your starter code here: https://classroom.github.com/a/qObzKUBL
-
 This is a **solo** project that runs for **three weeks**, with **one 100-minute lab session each week**, plus work at home between sessions (plan on about **2–3 hours** a week).
 
 **Deadline:** the end of your week 3 lab session. Work pushed after that is not marked.
