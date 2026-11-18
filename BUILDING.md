@@ -32,7 +32,7 @@ Install Xcode command line tools and CMake (`xcode-select --install`, `brew inst
 On Windows with Visual Studio, use the IDE rather than the command line:
 
 - **Open:** *File → Open → Folder…* (not *Open → Project/Solution*). Visual Studio reads `CMakePresets.json` and configures the project.
-- **Configuration:** choose **Debug** or **Release** in the toolbar drop-down. Debug builds go to `build-debug/`, and Release builds to `build/`.
+- **Configuration:** **Debug** is selected the first time you open the folder. To change it, choose **Debug** or **Release** in the toolbar drop-down; Visual Studio re-runs CMake for that configuration. Debug builds go to `build-debug/`, and Release builds to `build/`.
 - **Build:** *Build → Build All*, or build one target from *Solution Explorer → Switch Views → CMake Targets View*.
 - **Run or debug:** choose the target (e.g. `sfml_refactor_lab.exe`) in *Select Startup Item* and press **F5**.
 - **Tests:** *Test → Test Explorer → Run All Tests*. The GoogleTest tests are found through CTest. If Test Explorer is empty, build all targets first, then refresh it.
@@ -45,26 +45,26 @@ If Visual Studio says it can't find CMake or a compiler, run the Visual Studio I
 
 ### Quick start (presets)
 
-`CMakePresets.json` holds the usual options, so one command configures, builds and runs the tests:
+`CMakePresets.json` holds the usual options, so one command configures, builds and runs the tests. The presets use the **Ninja** generator, which Visual Studio needs to switch cleanly between Debug and Release. Ninja comes with Visual Studio (use the Developer PowerShell, see below); on Linux or macOS install it with your package manager (e.g. `sudo apt install ninja-build`, `brew install ninja`).
 
 ```sh
-cmake --workflow --preset default    # Release build in build/
 cmake --workflow --preset debug      # Debug build in build-debug/
+cmake --workflow --preset release    # Release build in build/
 ```
 
 Or run the steps one at a time:
 
 ```sh
-cmake --preset default               # configure
-cmake --build --preset default       # build (repeat after editing code)
-ctest --preset default               # run the tests
+cmake --preset debug                 # configure
+cmake --build --preset debug         # build (repeat after editing code)
+ctest --preset debug                 # run the tests
 ```
 
-Visual Studio (*File → Open → Folder*) and VS Code with the CMake Tools extension read the presets too: pick **Release** or **Debug** from the preset list.
+Visual Studio (*File → Open → Folder*) and VS Code with the CMake Tools extension read the presets too: pick **Debug** or **Release** from the preset list.
 
 ### Without presets
 
-The same commands work on every platform:
+If you don't have Ninja, skip the presets. The same commands work on every platform:
 
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
@@ -93,7 +93,7 @@ By default CMake looks for an installed SFML 3 first and only downloads one if n
 
 - `-DSFML_DIR=<sfml>/lib/cmake/SFML`, `-DSFML_ROOT=<sfml>` or the `SFML_ROOT` environment variable
 - `-DCMAKE_PREFIX_PATH=<sfml>` or the `CMAKE_PREFIX_PATH` environment variable
-- `-DSFML_SDK=<folder>` or the `SFML_SDK` environment variable, pointing at an SFML SDK folder or at a folder containing `SFML-3*` SDKs
+- `-DSFML_SDK=<folder>` (or `-DSFML_PATH=<folder>`), or the `SFML_SDK` / `SFML_PATH` environment variable, pointing at an SFML SDK folder or at a folder containing `SFML-3*` SDKs
 - on Windows, `C:\SFML-3*` (also the nested `C:\SFML-3.0.2\SFML-3.0.2` that "Extract All" creates), `C:\SFML\SFML-3*` and `C:\SFML` (newest version first)
 - CMake's standard locations (`PATH`, `Program Files`, `/usr`, `/usr/local`, Homebrew)
 
@@ -123,7 +123,7 @@ A text menu asks for a letter (the uppercase letter in the game name, for exampl
 The unit tests (GoogleTest: the Xonix `Grid` and `Player` classes, plus one test file per assignment game, `Tests/<game>_test.cpp`) are built by default; disable them with `-DSFML_GAMES_BUILD_TESTS=OFF`. Every `.cpp` file in `Tests/` is part of the test program, so a new test file only needs CMake to be re-run.
 
 ```sh
-ctest --preset default                                   # with presets
+ctest --preset debug                                     # with presets
 ctest --test-dir build -C Release --output-on-failure    # without
 ```
 

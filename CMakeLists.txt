@@ -22,7 +22,7 @@ if(SFML_GAMES_BUILD_GAME)
 # Searched, in order:
 #   -DSFML_DIR=<sfml>/lib/cmake/SFML, -DSFML_ROOT=<sfml> or env SFML_ROOT,
 #   -DCMAKE_PREFIX_PATH=<sfml> or env CMAKE_PREFIX_PATH,
-#   -DSFML_SDK=<sfml> or env SFML_SDK (an SDK folder, or a folder holding SFML-3* SDKs),
+#   -DSFML_SDK=<sfml> / -DSFML_PATH=<sfml> or env SFML_SDK / SFML_PATH (an SDK folder, or a folder holding SFML-3* SDKs),
 #   C:\SFML-3*, C:\SFML-3*\SFML-3*, C:\SFML\SFML-3* and C:\SFML (Windows, newest first),
 #   then CMake's usual places (PATH, Program Files, /usr, /usr/local, Homebrew).
 #
@@ -32,13 +32,14 @@ if(SFML_GAMES_BUILD_GAME)
 # ---------------------------------------------------------------------------
 option(SFML_GAMES_FETCH_SFML "Always download and build SFML instead of searching for it" OFF)
 set(SFML_SDK "" CACHE PATH "SFML 3 SDK folder, or a folder containing SFML-3* SDKs (env SFML_SDK also works)")
+set(SFML_PATH "" CACHE PATH "Alias for SFML_SDK (env SFML_PATH also works)")
 
 set(SFML_GAMES_USE_INSTALLED OFF)
 
 if(NOT SFML_GAMES_FETCH_SFML)
     # Extra places to look, beyond what find_package searches by itself.
     set(_sfml_roots)
-    foreach(_root IN ITEMS "${SFML_SDK}" "$ENV{SFML_SDK}")
+    foreach(_root IN ITEMS "${SFML_SDK}" "$ENV{SFML_SDK}" "${SFML_PATH}" "$ENV{SFML_PATH}")
         if(_root)
             file(TO_CMAKE_PATH "${_root}" _root)
             list(APPEND _sfml_roots "${_root}")
