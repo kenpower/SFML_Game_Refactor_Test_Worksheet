@@ -54,10 +54,10 @@ Choose **one** of these four games:
 
 | Game | Your class (already provided, empty) | Test file |
 |------|--------------------------------------|-----------|
-| **Tetris** | `16_SFML_Games/TetrisBoard.h` | `Tests/tetris_test.cpp` |
-| **Minesweeper** | `16_SFML_Games/MineField.h` | `Tests/minesweeper_test.cpp` |
-| **Tron** | `16_SFML_Games/TronArena.h` | `Tests/tron_test.cpp` |
-| **Netwalk** | `16_SFML_Games/PipeGrid.h` | `Tests/netwalk_test.cpp` |
+| **Tetris** | `Games/TetrisBoard.h` | `Tests/tetris_test.cpp` |
+| **Minesweeper** | `Games/MineField.h` | `Tests/minesweeper_test.cpp` |
+| **Tron** | `Games/TronArena.h` | `Tests/tron_test.cpp` |
+| **Netwalk** | `Games/PipeGrid.h` | `Tests/netwalk_test.cpp` |
 
 All four keep their game state in whole numbers (grids, cells, directions), so their tests compare `int`s and `bool`s.
 

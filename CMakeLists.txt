@@ -13,7 +13,7 @@ option(SFML_GAMES_BUILD_GAME "Build the game launcher (requires SFML)" ON)
 
 include(FetchContent)
 
-set(GAME_DIR ${CMAKE_CURRENT_SOURCE_DIR}/16_SFML_Games)
+set(GAME_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Games)
 
 if(SFML_GAMES_BUILD_GAME)
 # ---------------------------------------------------------------------------
@@ -140,7 +140,7 @@ endif()
 # Game launcher
 # ---------------------------------------------------------------------------
 add_executable(sfml_refactor_lab
-    ${GAME_DIR}/16_SFML_Games.cpp
+    ${GAME_DIR}/main.cpp
     ${GAME_DIR}/minesweeper.cpp
     ${GAME_DIR}/netwalk.cpp
     ${GAME_DIR}/tetris.cpp

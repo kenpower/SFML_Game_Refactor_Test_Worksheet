@@ -67,11 +67,11 @@ In VS Code, use the CMake Tools extension: pick a preset, then use its Build, De
 
 | Path | What's there |
 |------|--------------|
-| `16_SFML_Games/` | One `.cpp` file per game, and the launcher (`16_SFML_Games.cpp`) |
-| `16_SFML_Games/TetrisBoard.h`, `MineField.h`, `TronArena.h`, `PipeGrid.h` | An empty class for each game. In week 2, your game's rules move into its class. |
-| `16_SFML_Games/Geometry.h` | `geom::Point`, `geom::Vec2f`, `geom::Rect` and `geom::overlaps()`. Use these in your class instead of SFML's types. |
-| `16_SFML_Games/Grid.h`, `Player.h` | Xonix's rules, already split from SFML. This is an example of what you're aiming for. |
-| `16_SFML_Games/images/` | The games' images, copied next to the program when you build |
+| `Games/` | One `.cpp` file per game, and the launcher (`main.cpp`) |
+| `Games/TetrisBoard.h`, `MineField.h`, `TronArena.h`, `PipeGrid.h` | An empty class for each game. In week 2, your game's rules move into its class. |
+| `Games/Geometry.h` | `geom::Point`, `geom::Vec2f`, `geom::Rect` and `geom::overlaps()`. Use these in your class instead of SFML's types. |
+| `Games/Grid.h`, `Player.h` | Xonix's rules, already split from SFML. This is an example of what you're aiming for. |
+| `Games/images/` | The games' images, copied next to the program when you build |
 | `Tests/` | Unit tests. There is one file for each game you can choose (e.g. `tetris_test.cpp`): your tests go in that one. `test.cpp` tests Xonix's classes and `geometry_test.cpp` tests `Geometry.h`, so you can look at them for examples. |
 
 ### Reading the game code

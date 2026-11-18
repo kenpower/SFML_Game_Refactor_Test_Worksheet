@@ -4,7 +4,7 @@
 // Only work in the file for YOUR game.
 //
 // How to use it (week 2):
-//   1. Your extracted class goes in 16_SFML_Games/TronArena.h, which is already included below.
+//   1. Your extracted class goes in Games/TronArena.h, which is already included below.
 //      The Tests program does not link SFML, so if that header pulls in SFML, this file
 //      will not compile. That is deliberate: it proves your class is free of SFML.
 //   2. Replace the placeholder test with real ones, named after behaviours, e.g.

@@ -53,13 +53,13 @@ During the lab, the only AI tool allowed is [cs50.ai/chat](https://cs50.ai/chat)
 
 ## Step 6 – Extract a testable class
 
-Move the game's rules into their own class, in their own header file (e.g. `16_SFML_Games/TetrisBoard.h`).
+Move the game's rules into their own class, in their own header file (e.g. `Games/TetrisBoard.h`).
 
 **Keep it focused.** One class with **3–4 public methods that contain real rules** is enough. For Tetris that could be the board, movement and line clearing, not the whole game. It must contain at least one rule that changes state based on a condition (a collision, a line clear, a reveal, a crash).
 
 You start the lab with the rules already gathered into `update()` and a state `struct` in your game file (week 1). Now follow [howto_split.md](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split.md) steps 7–8:
 
-1. Move them into your game's header, which is already provided with an empty class inside your game's namespace (e.g. `16_SFML_Games/TetrisBoard.h`). State becomes private members, functions become public methods, and the game draws from **getters**. Add `#include "TetrisBoard.h"` (or your game's header) to your game's `.cpp` file.
+1. Move them into your game's header, which is already provided with an empty class inside your game's namespace (e.g. `Games/TetrisBoard.h`). State becomes private members, functions become public methods, and the game draws from **getters**. Add `#include "TetrisBoard.h"` (or your game's header) to your game's `.cpp` file.
 2. Build the `Tests` target. Your game's test file (e.g. `Tests/tetris_test.cpp`) already includes the header, so if your class pulls in SFML, it won't compile. Replace the placeholder `name()` test with real tests once you have some.
 
 Commit each step separately, with `refactor(extract-class):`, and push.
@@ -76,7 +76,7 @@ Your class must:
 - [ ] Be used by the game, which still plays exactly as before. Run your manual test script.
 - [ ] Compile in the `Tests` project.
 
-If you need positions or rectangles, use `geom::Point`, `geom::Vec2f` and `geom::Rect` (with `geom::overlaps()`) from `16_SFML_Games/Geometry.h`, not the SFML types.
+If you need positions or rectangles, use `geom::Point`, `geom::Vec2f` and `geom::Rect` (with `geom::overlaps()`) from `Games/Geometry.h`, not the SFML types.
 
 Search your header for `SFML`, `rand`, `time`, `Clock` and `Keyboard`. None of them should appear. The compiler checks the rest: the test project doesn't link SFML, so if your class pulls in SFML, the tests won't compile.
 
