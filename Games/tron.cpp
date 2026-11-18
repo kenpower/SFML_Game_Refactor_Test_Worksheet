@@ -51,6 +51,7 @@ int tron()
 {
     // ---- SETUP: window, background, players, off-screen texture ----
     srand(time(0));
+    for (auto& column : field) for (bool& cell : column) cell = false;   // clear trails left by an earlier game
 
     RenderWindow window(VideoMode({W, H}), "The Tron Game!");
     window.setFramerateLimit(60);
@@ -79,26 +80,27 @@ int tron()
 
         // ---- INPUT: steering keys for both players ----
         // HINT: the two blocks of key checks are near-duplicates - what differs? A small struct of keys per player might help.
-        if (Keyboard::isKeyPressed(Keyboard::Key::Left)) if (p1.dir!=2) p1.dir=1;
-        if (Keyboard::isKeyPressed(Keyboard::Key::Right)) if (p1.dir!=1)  p1.dir=2;
-        if (Keyboard::isKeyPressed(Keyboard::Key::Up)) if (p1.dir!=0) p1.dir=3;
-        if (Keyboard::isKeyPressed(Keyboard::Key::Down)) if (p1.dir!=3) p1.dir=0;
+        // Compare with the direction at the start of the frame, so two keys pressed together can't reverse a bike.
+        int p1Was = p1.dir, p2Was = p2.dir;
+        if (Keyboard::isKeyPressed(Keyboard::Key::Left)) if (p1Was!=2) p1.dir=1;
+        if (Keyboard::isKeyPressed(Keyboard::Key::Right)) if (p1Was!=1)  p1.dir=2;
+        if (Keyboard::isKeyPressed(Keyboard::Key::Up)) if (p1Was!=0) p1.dir=3;
+        if (Keyboard::isKeyPressed(Keyboard::Key::Down)) if (p1Was!=3) p1.dir=0;
 
-        if (Keyboard::isKeyPressed(Keyboard::Key::A)) if (p2.dir!=2) p2.dir=1;
-        if (Keyboard::isKeyPressed(Keyboard::Key::D)) if (p2.dir!=1)  p2.dir=2;
-        if (Keyboard::isKeyPressed(Keyboard::Key::W)) if (p2.dir!=0) p2.dir=3;
-        if (Keyboard::isKeyPressed(Keyboard::Key::S)) if (p2.dir!=3) p2.dir=0;
+        if (Keyboard::isKeyPressed(Keyboard::Key::A)) if (p2Was!=2) p2.dir=1;
+        if (Keyboard::isKeyPressed(Keyboard::Key::D)) if (p2Was!=1)  p2.dir=2;
+        if (Keyboard::isKeyPressed(Keyboard::Key::W)) if (p2Was!=0) p2.dir=3;
+        if (Keyboard::isKeyPressed(Keyboard::Key::S)) if (p2Was!=3) p2.dir=0;
 
         // ---- UPDATE: move both players and check the trails ----
-        if (!Game)    continue;
-
         // HINT: why loop 'speed' times per frame? Put a breakpoint inside and watch p1.x, p1.y and Game.
-        for(int i=0;i<speed;i++)
+        for(int i=0;i<speed && Game;i++)
         {
             p1.tick(); p2.tick();
             // HINT: field[][] is the real memory of the trails, the RenderTexture is only the picture. Could the rules live in an SFML-free class?
             if (field[p1.x][p1.y]==1) Game=0; 
             if (field[p2.x][p2.y]==1) Game=0;
+            if (!Game) window.setTitle("The Tron Game! - Game over");
             field[p1.x][p1.y]=1; 
             field[p2.x][p2.y]=1;
     
