@@ -1,14 +1,18 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
+#include "TronArena.h"
 using namespace sf;
+using namespace tron_game;
 
 // ===== GUIDE: Tron =====
-// Entry point is int tron(). State that survives between frames: the globals W, H, speed and field[][] (the trail map),
+// Entry point is int tron(). State that survives between frames: the globals W, H, speed and arena (the trail map),
 // plus the locals p1, p2 (and their colours), t (a RenderTexture holding the picture of the trails) and Game, declared before the loop.
-// Suggested reading order: struct Bike, then SETUP in tron(), then the loop: INPUT, UPDATE, DRAW.
+// HALF-SPLIT: the trail map and the Bike (moving one step and wrapping round) have already moved into
+// TronArena.h, with tests in Tests/tron_test.cpp. Every other rule is still here.
+// Suggested reading order: TronArena.h, then newBike(), then SETUP in tron(), then the loop: INPUT, UPDATE, DRAW.
 // Refactorings to look for (week 1 needs 2+ seam types and 2+ other types):
-//   SEAM inject      - the Bike constructor calls rand() for the starting x, y and dir
-//   SEAM de-global   - Bike::tick() and the loop in tron() read the globals W, H, speed and field
+//   SEAM inject      - newBike() calls rand() for the starting x, y and dir
+//   SEAM de-global   - newBike() and the loop in tron() read the globals W, H, speed and arena
 //   SEAM input-data  - Keyboard::isKeyPressed is called inside the steering code for both players
 //   rename           - p1, p2, t, c, Game
 //   constant         - speed 4, the radius 3, the dir values 0-3, the key lists
@@ -17,35 +21,20 @@ using namespace sf;
 //   struct           - the four keys that belong to one player
 // =====
 // ---- GLOBAL STATE: arena size, speed, trail map ----
-// HINT: field is 600 x 480 bools (about 288 KB). If it becomes a class member, store it in a std::vector, not a C array:
-// a big array inside an object created as a local variable (e.g. in a test) can overflow the stack.
 const int W=600;
 const int H=480;
 int speed = 4;
-static bool field[W][H]={0};
+static TronArena arena(W, H);
 
-// ---- DATA + BEHAVIOUR: a player's bike has a position and direction, and moves itself ----
-struct Bike
-{ int x,y,dir;
-  Bike()
-  {
-    x=rand() % W;
-    y=rand() % H;
-    dir=rand() % 4;
-  }
-  // ---- UPDATE: move one pixel and wrap round the edges ----
-  void tick()
-  {
-    // HINT: what do the dir values 0-3 mean? Compare with the steering keys in tron().
-    if (dir==0) y+=1;
-    if (dir==1) x-=1;
-    if (dir==2) x+=1;
-    if (dir==3) y-=1;
-
-    if (x>=W) x=0;  if (x<0) x=W-1;
-    if (y>=H) y=0;  if (y<0) y=H-1;
-  }
-};
+// ---- SETUP helper: a bike at a random place, going a random way ----
+Bike newBike()
+{
+    Bike bike;
+    bike.x=rand() % W;
+    bike.y=rand() % H;
+    bike.dir=rand() % 4;
+    return bike;
+}
 
 int tron()
 {
@@ -58,7 +47,7 @@ int tron()
     Texture texture("images/tron/background.jpg");
     Sprite sBackground(texture);
 
-    Bike p1, p2;
+    Bike p1 = newBike(), p2 = newBike();
     Color p1Color = Color::Red, p2Color = Color::Green;
 
     RenderTexture t({W, H});
@@ -95,12 +84,12 @@ int tron()
         // HINT: why loop 'speed' times per frame? Put a breakpoint inside and watch p1.x, p1.y and Game.
         for(int i=0;i<speed;i++)
         {
-            p1.tick(); p2.tick();
-            // HINT: field[][] is the real memory of the trails, the RenderTexture is only the picture. Could the rules live in an SFML-free class?
-            if (field[p1.x][p1.y]==1) Game=0; 
-            if (field[p2.x][p2.y]==1) Game=0;
-            field[p1.x][p1.y]=1; 
-            field[p2.x][p2.y]=1;
+            p1.tick(W,H); p2.tick(W,H);
+            // HINT: arena is the real memory of the trails, the RenderTexture is only the picture. These rules could join TronArena.
+            if (arena.isTrail(p1.x,p1.y)) Game=0;
+            if (arena.isTrail(p2.x,p2.y)) Game=0;
+            arena.markTrail(p1.x,p1.y);
+            arena.markTrail(p2.x,p2.y);
     
             // HINT: the drawing below only needs to know where each bike is after each step.
             CircleShape c(3);

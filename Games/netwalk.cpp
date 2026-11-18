@@ -2,11 +2,15 @@
 #include <time.h>
 #include <vector>
 #include <string>
+#include "PipeGrid.h"
 using namespace sf;
+using namespace netwalk_game;
 // ===== GUIDE: Netwalk =====
 // Entry point: int netwalk(), at the bottom. The board is the global `grid` (N x N pipes) and the helpers above work on it.
+// HALF-SPLIT: GridPos, the Pipe (rotate, isConnect) and the grid itself have already moved into PipeGrid.h,
+// with tests in Tests/netwalk_test.cpp. Every other rule is still here.
 // State that survives between frames: grid, plus servPos and the sprites declared before the loop in netwalk().
-// Suggested reading order: struct pipe, then generatePuzzle, then drop, then netwalk() from SETUP downwards.
+// Suggested reading order: PipeGrid.h, then generatePuzzle, then drop, then netwalk() from SETUP downwards.
 // Refactorings to look for (week 1 needs 2+ seam types and 2+ other types):
 //   SEAM de-global   - generatePuzzle(), drop(), cell() and isOut() all work on the global grid instead of being given it
 //   SEAM inject      - rand() in generatePuzzle(), in the SETUP shuffle, and when the server is placed
@@ -21,58 +25,10 @@ const int N = 6;
 int tsz = 54; //tile size
 Vector2f oset(65,55);
 
-// ---- DATA: a cell on the board, or a step from one cell to the next ----
-struct GridPos
-{
-  int x,y;
-  GridPos() : x(0), y(0) {}
-  GridPos(int x,int y) : x(x), y(y) {}
-};
-
-GridPos operator+(GridPos a, GridPos b) {return GridPos(a.x+b.x, a.y+b.y);}
-GridPos operator-(GridPos a) {return GridPos(-a.x, -a.y);}
-bool operator==(GridPos a, GridPos b) {return a.x==b.x && a.y==b.y;}
-
-// ---- DATA: direction vectors used throughout ----
-GridPos Up(0,-1);
-GridPos Down(0,1);
-GridPos Right(1,0);
-GridPos Left(-1,0);
-
-GridPos DIR[4] = {Up,Right,Down,Left};
-
-// ---- DATA: one pipe tile - which sides it connects to, plus rotation state ----
-// HINT: orientation is part of the puzzle; angle is only the animated picture of it (see the DRAW section).
-struct pipe
-{
-  std::vector<GridPos> dirs;
-  int orientation;
-  float angle; bool on;
-
-  pipe() {angle=0;}
-
-  void rotate()
-  {
-    for(int i=0;i<dirs.size();i++)
-      if (dirs[i]==Up)  dirs[i]=Right;
-      else if (dirs[i]==Right) dirs[i]=Down;
-      else if (dirs[i]==Down)  dirs[i]=Left;
-      else if (dirs[i]==Left)  dirs[i]=Up;
-  }
-
-  bool isConnect(GridPos dir)
-  {
-    for(auto d: dirs)
-     if (d==dir) return true;
-    return false;
-  }
-};
-
-
 // ---- DATA: the board, with small helpers to access it ----
-static pipe grid[N][N];
-pipe& cell(GridPos v) {return grid[v.x][v.y];}
-bool isOut(GridPos v) {return !(v.x>=0 && v.x<N && v.y>=0 && v.y<N);}
+static PipeGrid grid(N);
+Pipe& cell(GridPos v) {return grid.cell(v);}
+bool isOut(GridPos v) {return grid.isOut(v);}
 
 
 // ---- SETUP helper: randomly grows a connected network of pipes ----
@@ -143,7 +99,7 @@ int netwalk()
     for(int i=0;i<N;i++)
      for(int j=0;j<N;j++)
        {
-         pipe &p = grid[j][i];
+         Pipe &p = cell(GridPos(j,i));
 
          for(int n=4;n>0;n--) //find orientation//
          {
@@ -154,7 +110,7 @@ int netwalk()
          }
 
          for(int n=0;n<rand()%4;n++) //shuffle//
-          {grid[j][i].orientation++; grid[j][i].rotate();}
+          {p.orientation++; p.rotate();}
        }
 
     // ---- SETUP: place the server ----
@@ -184,7 +140,7 @@ int netwalk()
 
                     for(int i=0;i<N;i++)
                      for(int j=0;j<N;j++)
-                      grid[j][i].on=0;
+                      cell(GridPos(j,i)).on=0;
 
                     drop(servPos);
                   }
@@ -197,7 +153,7 @@ int netwalk()
         for(int i=0;i<N;i++)
          for(int j=0;j<N;j++)
            {
-            pipe &p = grid[j][i];
+            Pipe &p = cell(GridPos(j,i));
 
             // HINT: kind picks which image to use from pipes.png - what do 0, 1, 2 and 3 correspond to?
             int kind = p.dirs.size();

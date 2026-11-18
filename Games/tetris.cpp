@@ -1,29 +1,29 @@
 #include <SFML/Graphics.hpp>
 #include <time.h>
+#include "TetrisBoard.h"
 using namespace sf;
+using namespace tetris_game;
 
 // ===== GUIDE: Tetris =====
 // Entry point: int tetris(). Almost everything happens inside its while (window.isOpen()) loop.
-// State that survives between frames: globals field, a, b (below), plus dx, rotate, colorNum, timer, delay (declared before the loop).
-// Suggested reading order: field and figures -> check() -> setup in tetris() -> the loop, top to bottom.
+// HALF-SPLIT: the board of landed blocks and the "does this piece fit?" check have already moved into
+// TetrisBoard (TetrisBoard.h), with tests in Tests/tetris_test.cpp. Every other rule is still here.
+// State that survives between frames: globals board, a, b (below), plus dx, rotate, colorNum, timer, delay (declared before the loop).
+// Suggested reading order: TetrisBoard.h -> figures -> setup in tetris() -> the loop, top to bottom.
 // Refactorings to look for (week 1 needs 2+ seam types and 2+ other types):
 //   SEAM inject         - rand() picks colorNum and the shape index n in the gravity tick; the Clock is read in the loop
 //                         (timer accumulates time), so the elapsed time could be passed in instead
-//   SEAM de-global      - check() reads the globals field and a[] instead of being given them; the loop also uses field, a, b
+//   SEAM de-global      - the loop works on the globals board, a and b
 //   SEAM input-data     - Keyboard::isKeyPressed(Down) is read in the middle of the update (it sets delay)
 //   rename              - a, b, k, n, s, t1, t2, t3, dx
 //   constant            - 18, the (28, 31) offset, the 0.3 and 0.05 delays, the 7 shapes
-//   extract-function    - move, rotate, tick and clear-lines sections of the loop
-//   std-array           - field and figures are plain C arrays
+//   extract-function    - move, rotate, tick and clear-lines sections of the loop (then move them into TetrisBoard)
+//   std-array           - figures is a plain C array
 // =====
-const int M = 20;
-const int N = 10;
+// ---- SHARED STATE: board = landed blocks, a = falling piece, b = its previous position ----
+static TetrisBoard board;
 
-// ---- SHARED STATE: field = landed blocks, a[] = falling piece, b[] = its previous position ----
-static int field[M][N] = {0};
-
-struct Point
-{int x,y;} a[4], b[4];
+static Piece a, b;
 
 // ---- DATA: the seven piece shapes ----
 // HINT: each number is a cell index in a 2-column grid - look at how the numbers are decoded when a new piece spawns.
@@ -38,15 +38,6 @@ int figures[7][4] =
     2,3,4,5, // O
 };
 
-// ---- HELPER: check() asks whether the falling piece a[] is in a legal place ----
-bool check()
-{
-   for (int i=0;i<4;i++)
-      if (a[i].x<0 || a[i].x>=N || a[i].y>=M) return 0;
-      else if (field[a[i].y][a[i].x]) return 0;
-
-   return 1;
-};
 
 
 int tetris()
@@ -92,14 +83,14 @@ int tetris()
     // ---- UPDATE: move sideways ----
     //// <- Move -> ///
     for (int i=0;i<4;i++)  { b[i]=a[i]; a[i].x+=dx; }
-    if (!check()) for (int i=0;i<4;i++) a[i]=b[i];
+    if (!board.isLegal(a)) for (int i=0;i<4;i++) a[i]=b[i];
 
     // ---- UPDATE: rotate ----
     //////Rotate//////
     if (rotate)
       {
         // HINT: this rotation uses a[1] as a pivot - try it on paper with a T piece.
-        Point p = a[1]; //center of rotation
+        geom::Point p = a[1]; //center of rotation
         for (int i=0;i<4;i++)
           {
             int x = a[i].y-p.y;
@@ -107,7 +98,7 @@ int tetris()
             a[i].x = p.x - x;
             a[i].y = p.y + y;
            }
-           if (!check()) for (int i=0;i<4;i++) a[i]=b[i];
+           if (!board.isLegal(a)) for (int i=0;i<4;i++) a[i]=b[i];
       }
 
     // ---- UPDATE: gravity tick - drop, lock in place, spawn next piece ----
@@ -116,9 +107,9 @@ int tetris()
       {
         for (int i=0;i<4;i++) { b[i]=a[i]; a[i].y+=1; }
 
-        if (!check())
+        if (!board.isLegal(a))
         {
-         for (int i=0;i<4;i++) field[b[i].y][b[i].x]=colorNum;
+         for (int i=0;i<4;i++) board.setCell(b[i].y, b[i].x, colorNum);
 
          colorNum=1+rand()%7;
          int n=rand()%7;
@@ -135,16 +126,16 @@ int tetris()
     // ---- UPDATE: clear completed lines ----
     ///////check lines//////////
     // HINT: put a breakpoint here and watch k and i - why do they sometimes differ?
-    int k=M-1;
-    for (int i=M-1;i>0;i--)
+    int k=board.rows()-1;
+    for (int i=board.rows()-1;i>0;i--)
     {
         int count=0;
-        for (int j=0;j<N;j++)
+        for (int j=0;j<board.cols();j++)
         {
-            if (field[i][j]) count++;
-            field[k][j]=field[i][j];
+            if (board.cellAt(i,j)) count++;
+            board.setCell(k,j,board.cellAt(i,j));
         }
-        if (count<N) k--;
+        if (count<board.cols()) k--;
     }
 
     // ---- RESET: per-frame inputs go back to defaults ----
@@ -155,12 +146,12 @@ int tetris()
     window.clear(Color::White);    
     window.draw(background);
           
-    for (int i=0;i<M;i++)
-     for (int j=0;j<N;j++)
+    for (int i=0;i<board.rows();i++)
+     for (int j=0;j<board.cols();j++)
        {
-         if (field[i][j]==0) continue;
+         if (board.cellAt(i,j)==0) continue;
          // HINT: 18 and the offset (28, 31) are pixel sizes - good candidates for named constants.
-         s.setTextureRect(IntRect({field[i][j]*18,0},{18,18}));
+         s.setTextureRect(IntRect({board.cellAt(i,j)*18,0},{18,18}));
          s.setPosition({float(j*18),float(i*18)});
          s.move({28,31}); //offset
          window.draw(s);

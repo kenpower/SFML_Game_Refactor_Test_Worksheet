@@ -8,7 +8,7 @@ Part of the three-week project **Refactor, test and extend an SFML game**. See [
 > - Ken or Ben has seen your breakpoint hit (in the lab)
 > - `NOTES.md` maps the game, and has a manual test script and a test list
 > - you have made at least **6** refactorings, of at least **4** types, including at least **2** seam types
-> - your game's rules are gathered into an `update()` function and a state `struct`, still in the game file
+> - the rules still in your game file are gathered into an `update()` function and a state `struct`
 > - the `week1` tag is pushed **before session 2**
 
 Read [seams_lecture_notes.md](https://github.com/kenpower/split-at-the-seam/blob/main/seams_lecture_notes.md) before the lab, or at least sections 1–3.
@@ -30,7 +30,8 @@ In the lab you may use [cs50.ai/chat](https://cs50.ai/chat)[^duck] for technical
 
 - Finish `NOTES.md`: state table, questions, test list.
 - Add the seam map to your game's code (step 5a), then do the seam refactorings (step 5b) and any more general ones.
-- Finish by gathering the rules into `update()` and a state `struct` (step 5c). That makes **6+ refactorings** in total.
+- Finish by gathering the rules still in your game file into `update()` and a state `struct` (step 5c). That makes **6+ refactorings** in total.
+- Finish the two unfinished tests in your game's test file (step 5d). They are practice for the week 2 test task.
 - Read [howto_split.md](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split.md), and build and play `catcher_before` and `catcher_after` from the [split-at-the-seam](https://github.com/kenpower/split-at-the-seam) repository.
 - Push the `week1` tag.
 
@@ -44,7 +45,7 @@ Follow the [README](https://github.com/kenpower/SFML_Game_Refactor_Test_Workshee
 2. **Build** everything (*Build → Build All* in Visual Studio).
 3. **Run the launcher** under the debugger: choose `sfml_refactor_lab.exe` as the startup item and press **F5**. Play a game for a moment. If the images don't load, the debugger is running the game from the wrong folder: see [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md#visual-studio).
 4. **Set a breakpoint** inside the game loop of any game, start it under the debugger, and check that the breakpoint is hit.
-5. **Run the tests:** *Test → Test Explorer → Run All Tests* in Visual Studio (on the command line, `ctest --test-dir build-debug --output-on-failure`). The Xonix tests and the placeholder test for each game (`Tests/tetris_test.cpp` and so on) should all pass.
+5. **Run the tests:** *Test → Test Explorer → Run All Tests* in Visual Studio (on the command line, `ctest --test-dir build-debug --output-on-failure`). All the tests should pass, except a few marked **skipped**: those are unfinished tests for you to finish later (step 5d).
 
 **Show Ken or Ben your breakpoint being hit.** If you can't get this working within the first 15 minutes, ask straight away. Every later step depends on it.
 
@@ -52,8 +53,8 @@ Follow the [README](https://github.com/kenpower/SFML_Game_Refactor_Test_Workshee
 
 Choose **one** of these four games:
 
-| Game | Your class (already provided, empty) | Test file |
-|------|--------------------------------------|-----------|
+| Game | Your class (already provided, partly done) | Test file |
+|------|--------------------------------------------|-----------|
 | **Tetris** | `Games/TetrisBoard.h` | `Tests/tetris_test.cpp` |
 | **Minesweeper** | `Games/MineField.h` | `Tests/minesweeper_test.cpp` |
 | **Tron** | `Games/TronArena.h` | `Tests/tron_test.cpp` |
@@ -62,6 +63,21 @@ Choose **one** of these four games:
 All four keep their game state in whole numbers (grids, cells, directions), so their tests compare `int`s and `bool`s.
 
 This repository contains only these four games and Xonix. Xonix is the worked example (see `Grid.h`, `Player.h` and `Tests/test.cpp`) and can't be chosen.
+
+### Your game is half-split already
+
+Your game's class is **not empty**. About a quarter of the game's rules have already been moved into it, and they have tests. For example, `TetrisBoard` already holds the board and the check for whether a piece fits. The other three quarters of the rules are still in the game file, on the wrong side of the seam. Moving them across is your project.
+
+This gives you a worked example inside your own game: when you are unsure how to move a rule, or how to test it, look at how the part that has already moved was done.
+
+| Game | Already in the class | Still in the game file |
+|------|----------------------|------------------------|
+| **Tetris** | the board; does a piece fit? | the falling piece, spawning, moving sideways, rotating, the gravity tick, clearing lines |
+| **Minesweeper** | where the mines are; counting the mines round each cell | placing the mines, what the player sees, revealing and flagging, hitting a mine |
+| **Tron** | the trail map; a bike moving one step and wrapping round | where the bikes start, steering, crashing into a trail, leaving a trail, game over |
+| **Netwalk** | the grid; a pipe, and turning it | generating the puzzle, shuffling, placing the server, clicking a pipe, finding what connects to the server |
+
+The top of your class's header says exactly what has moved and what hasn't. Some methods there are marked `SCAFFOLD`: they only exist so the game file can reach the class's data while the rules that use it are still outside. They go away as the rules move in.
 
 Read the **Refactorings to look for** list at the top of your game's `.cpp` file. It tells you where to start.
 
@@ -73,6 +89,7 @@ Understanding an unfamiliar codebase is hard, and you are not expected to unders
 
 ### Read with a strategy
 
+- **Start with your class:** read your game's header (e.g. `Games/TetrisBoard.h`) and its finished tests (e.g. `Tests/tetris_test.cpp`). This is the part of the game you can already trust.
 - **Top-down:** start at the game's entry function (e.g. `int tetris()`) and follow the main loop. What are the 3 or 4 "big" jobs the loop does every frame? The `// ----` signpost comments in the code will help.
 - **Follow the data:** list every variable that survives between frames (globals, and locals declared before the loop). For each one, write down what you think it represents and which parts of the loop read or change it.
 - **Use the debugger:** step through one full frame. Put a breakpoint on an `if` and check whether the condition is true when you expected it to be. Use watches to see the data change.
@@ -180,7 +197,7 @@ Start with the easy general ones in the lab (`rename`, `constant`, `explain-var`
 
 ## Step 5 – Refactor towards the seam (at home)
 
-These refactorings get your game ready for week 2, when you move its rules into a class with no SFML. Every seam refactoring you do now makes week 2's in-lab task quicker.
+These refactorings get your game ready for week 2, when you move the rest of its rules into your class. Every seam refactoring you do now makes week 2's in-lab task quicker.
 
 ### 5a. Add a seam map to the code
 
@@ -227,15 +244,30 @@ Not every game needs all six. Do the ones your seam map shows you need. The step
 
 ### 5c. Gather the rules into `update()`
 
-Once the rules are untangled, gather them in one place, **still in your game file** ([howto_split.md](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split.md) step 6, and [steps/step6_update.cpp](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split/steps/step6_update.cpp) for Catcher):
+Once the rules still in your game file are untangled, gather them in one place, **still in your game file** ([howto_split.md](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split.md) step 6, and [steps/step6_update.cpp](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split/steps/step6_update.cpp) for Catcher):
 
 - Put the game's state (the variables that live between frames) into one `struct`.
 - Move the RULE lines into one function, `update(...)`, that takes the struct and the plain inputs (keys, `dt`, random values). If one function is too big, use a few: e.g. `movePiece`, `dropPiece`, `clearRows`.
+- The state that is already in your class stays there. `update()` can take your class object as a parameter, alongside the struct, and call its methods.
 - The loop should now read: **input → update → draw**.
 
 Play the game and run your manual test script: it must still work. Commit as `refactor(extract-function): gather the rules into update()`. This counts as one of your 6 refactorings.
 
 This is the hardest thinking in the whole split ("which lines are rules?"), so it's best done at home, without a clock running. In session 2 you move this struct and function into your class.
+
+### 5d. Finish two tests (practice)
+
+Your game's test file has three tests for one rule that is already in your class. They get less finished as you go:
+
+- a **normal case**: finished. Read it.
+- an **edge case**: Arrange and Act are written. Write the Assert.
+- a case where the rule **does not apply**: only the name and a hint. Write all of it.
+
+The unfinished ones call `GTEST_SKIP()`, so they show as *skipped*. Delete that line when you finish a test, run it, and check that it passes. Commit each one as `test: <what it checks>`.
+
+Use the **pictures**: every class has a `fromRows()` that builds the game's state from a picture made of strings, and a `toRows()` that turns it back into one. The finished tests show how. A picture is the quickest way to set up a test (Arrange), and the easiest to check (Assert).
+
+These two tests are not marked this week, but they count towards your tests in week 2. The week 2 test task asks for the same three kinds of test, so this is your practice for it.
 
 ---
 
@@ -263,10 +295,11 @@ git push origin week1
 - [ ] `NOTES.md` has your game choice, game loop summary, state table, questions, manual test script, test list (5+), seam map summary, known issues and AI use
 - [ ] Seam map tags in your game's code, kept up to date
 - [ ] At least 6 `refactor(<type>):` commits, of at least 4 types, including at least 2 seam types
-- [ ] The rules gathered into `update()` and a state `struct` in the game file, and the game still plays the same
+- [ ] The rules still in the game file gathered into `update()` and a state `struct`, and the game still plays the same
+- [ ] The two unfinished tests finished, and passing
 - [ ] `session1` tag pushed at the end of the lab, and `week1` tag pushed before session 2
 
-In session 2 you move your `update()` and state `struct` into your class, then do a test task. The faster the move, the more time you have for the task.
+In session 2 you move your `update()` and state `struct` into your class, joining the rules already there, then do a test task. The faster the move, the more time you have for the task.
 
 ---
 

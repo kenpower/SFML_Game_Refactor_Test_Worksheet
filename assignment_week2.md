@@ -15,13 +15,13 @@ Part of the three-week project **Refactor, test and extend an SFML game**. See [
 
 ## Before the lab
 
-Your week 1 home work ends with the rules gathered into an `update()` function (or a few functions) and a state `struct`, **still in your game file** (week 1, step 5b). If that isn't done, do it before session 2: it makes the lab much easier.
+Your week 1 home work ends with the rules still in your game file gathered into an `update()` function (or a few functions) and a state `struct` (week 1, step 5c), and the two unfinished tests finished (week 1, step 5d). If that isn't done, do it before session 2: it makes the lab much easier.
 
 ## In the lab (100 minutes)
 
 | Time | What you do |
 |------|-------------|
-| 0–40 | Step 6: move your state struct and `update()` into your game's header, make them a class with getters, and make the game use it. Check the `Tests` target builds. |
+| 0–40 | Step 6: move your state struct and `update()` into your class, next to the rules already there, add getters, and make the game use it. Check the `Tests` target builds and the tests that came with your class still pass. |
 | 40–45 | Get the **test task** (below). Copy it into the **Test task** section of `NOTES.md`. |
 | 45–95 | Step 7a: add the task's rows to your behaviour table, write the tests, and make them pass |
 | 95–100 | Push, and push the `session2` tag. Your test task is marked from that tag. |
@@ -30,7 +30,7 @@ Your week 1 home work ends with the rules gathered into an `update()` function (
 
 At 40 minutes, Ken or Ben will give you the test task. It is the same kind of task for every game:
 
-> Choose **one rule** in your class. Write **3 tests** for it:
+> Choose **one rule** in your class that **you moved there** (not one that was already there at the start). Write **3 tests** for it:
 > 1. a **normal case**: the rule does what it should in an ordinary situation
 > 2. an **edge case**: the rule at a boundary (a wall, a corner, the first or last row, zero, full)
 > 3. a case where the rule **does not apply**: the situation where nothing should happen
@@ -51,16 +51,17 @@ During the lab, the only AI tool allowed is [cs50.ai/chat](https://cs50.ai/chat)
 
 ---
 
-## Step 6 – Extract a testable class
+## Step 6 – Finish the split
 
-Move the game's rules into their own class, in their own header file (e.g. `Games/TetrisBoard.h`).
+Your class (e.g. `Games/TetrisBoard.h`) started the project with about a quarter of the game's rules already in it. Now move more of the rules across.
 
-**Keep it focused.** One class with **3–4 public methods that contain real rules** is enough. For Tetris that could be the board, movement and line clearing, not the whole game. It must contain at least one rule that changes state based on a condition (a collision, a line clear, a reveal, a crash).
+**Keep it focused.** You don't have to move the whole game. Move in **at least 2–3 more public methods that contain real rules**. For Tetris that could be moving the piece and clearing lines. At least one of the rules you move must change state based on a condition (a line clear, a reveal, a crash, a pipe lighting up).
 
-You start the lab with the rules already gathered into `update()` and a state `struct` in your game file (week 1). Now follow [howto_split.md](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split.md) steps 7–8:
+You start the lab with the rules still in your game file gathered into `update()` and a state `struct` (week 1). Now follow [howto_split.md](https://github.com/kenpower/split-at-the-seam/blob/main/howto_split.md) steps 7–8:
 
-1. Move them into your game's header, which is already provided with an empty class inside your game's namespace (e.g. `Games/TetrisBoard.h`). State becomes private members, functions become public methods, and the game draws from **getters**. Add `#include "TetrisBoard.h"` (or your game's header) to your game's `.cpp` file.
-2. Build the `Tests` target. Your game's test file (e.g. `Tests/tetris_test.cpp`) already includes the header, so if your class pulls in SFML, it won't compile. Replace the placeholder `name()` test with real tests once you have some.
+1. Move them into your class, next to the rules already there. State becomes private members, functions become public methods, and the game draws from **getters**. Look at how the rules already in the class were done, and do the same.
+2. Delete each `SCAFFOLD` method that the game file no longer needs. (If the rules that use one are still in the game file, keep it.)
+3. Build the `Tests` target. Your game's test file (e.g. `Tests/tetris_test.cpp`) already includes the header, so if your class pulls in SFML, it won't compile. The tests that came with your class must still pass: if one breaks, your move changed what the class does.
 
 Commit each step separately, with `refactor(extract-class):`, and push.
 
@@ -74,7 +75,8 @@ Your class must:
 - [ ] **Not call `rand()`, read the clock, or read the keyboard or mouse.** If it needs randomness, time or input, take it as a parameter (e.g. `spawnPiece(int shapeIndex)`, `update(float dt)`, `reveal(int row, int col)`).
 - [ ] Have **getters** for the state the game needs to draw, so the game draws from the class.
 - [ ] Be used by the game, which still plays exactly as before. Run your manual test script.
-- [ ] Compile in the `Tests` project.
+- [ ] Compile in the `Tests` project, with the tests that came with it still passing.
+- [ ] Have no `SCAFFOLD` methods left that the game file doesn't need. If one is still needed, say which rule still uses it in `NOTES.md`.
 
 If you need positions or rectangles, use `geom::Point`, `geom::Vec2f` and `geom::Rect` (with `geom::overlaps()`) from `Games/Geometry.h`, not the SFML types.
 
@@ -98,16 +100,24 @@ Drawing and input stay in the game file, because they are the parts that need SF
 ```cpp
 TEST(TetrisBoard, FullRowIsClearedAndRowsAboveMoveDown) {
     // Arrange - set up the situation
-    TetrisBoard board;
-    board.fillRow(19);
-    board.setCell(18, 3, 5);
+    TetrisBoard board = TetrisBoard::fromRows({
+        "....",
+        "....",
+        "..5.",
+        "1111",
+    });
 
     // Act - do ONE thing
     board.clearFullRows();
 
     // Assert - check the result
-    EXPECT_EQ(5, board.cellAt(19, 3));
-    EXPECT_EQ(0, board.cellAt(18, 3));
+    Rows expected = {
+        "....",
+        "....",
+        "....",
+        "..5.",
+    };
+    EXPECT_EQ(expected, board.toRows());
 }
 ```
 
@@ -118,8 +128,9 @@ Good tests:
 - **Are independent.** Each test builds its own objects. No test relies on another having run first.
 - **Don't need the game window**, and run in milliseconds.
 - **Use `EXPECT_EQ`, `EXPECT_TRUE` and `EXPECT_FALSE`.** Your game keeps its state in whole numbers and `bool`s, so you can compare exactly.
+- **Use pictures where you can.** `fromRows()` sets up a situation in a way you can read, and comparing with `toRows()` checks the whole board at once. Use a small board: the picture only needs to be big enough for the rule.
 
-You may need small helper methods so a test can set up a situation or read a result, e.g. `setCell(r, c, value)` or `cellAt(r, c)`. That's normal. Getting the class into a known state is a big part of testing.
+Getting the class into a known state is a big part of testing. When you move new state into your class, extend `fromRows()` and `toRows()` so the pictures can show it (e.g. the falling piece as `@` in Tetris, or what the player can see in Minesweeper). You may also need small helper methods, e.g. `cellAt(r, c)`. That's normal.
 
 ### 7a. The test task (in the lab)
 
@@ -143,7 +154,7 @@ Turn your **Test list** into a **Behaviour table** in `NOTES.md`, with **at leas
 
 To find more behaviours, look at your manual test script, at **both sides of every `if`** in your class, at loops with 0, 1 and the maximum number of items, and at **boundaries**: first and last row, corners, zero, empty, full.
 
-Then write tests from the table until you have **at least 6 tests in total** (the test task's tests count), including at least **2** edge or boundary cases.
+Then write tests from the table until you have **at least 6 tests in total**, including at least **2** edge or boundary cases. The test task's tests and the two you finished in week 1 count. The finished tests that came with your class don't.
 
 **When you're not sure what the right answer is**, write a test that asserts what the code **currently does**, and name it honestly. This is a *characterisation test*.
 
@@ -169,7 +180,7 @@ git push origin week2
 
 | Part | Marks | What a top mark looks like |
 |------|------:|----------------------------|
-| Extracted class | 15 | Meets every item of the definition of done. The game draws from its getters. The class owns real rules. |
+| Extracted class | 15 | Meets every item of the definition of done. The game draws from its getters. The class owns real rules that you moved in, and the tests that came with it still pass. |
 | Test task (in lab) | 15 | Rows written first. 3 tests (normal, edge, doesn't apply) for one real rule, with clear names and Arrange/Act/Assert. They pass, or an honest failure is explained. |
 | Your own tests | 15 | Behaviour table with 8+ rows. 6+ tests in total that follow it, with 2+ edge cases, clear names and Arrange/Act/Assert. |
 

@@ -68,11 +68,11 @@ In VS Code, use the CMake Tools extension: pick a preset, then use its Build, De
 | Path | What's there |
 |------|--------------|
 | `Games/` | One `.cpp` file per game, and the launcher (`main.cpp`) |
-| `Games/TetrisBoard.h`, `MineField.h`, `TronArena.h`, `PipeGrid.h` | An empty class for each game. In week 2, your game's rules move into its class. |
+| `Games/TetrisBoard.h`, `MineField.h`, `TronArena.h`, `PipeGrid.h` | A class for each game, with about a quarter of the game's rules already moved into it. Moving the rest is your project. |
 | `Games/Geometry.h` | `geom::Point`, `geom::Vec2f`, `geom::Rect` and `geom::overlaps()`. Use these in your class instead of SFML's types. |
 | `Games/Grid.h`, `Player.h` | Xonix's rules, already split from SFML. This is an example of what you're aiming for. |
 | `Games/images/` | The games' images, copied next to the program when you build |
-| `Tests/` | Unit tests. There is one file for each game you can choose (e.g. `tetris_test.cpp`): your tests go in that one. `test.cpp` tests Xonix's classes and `geometry_test.cpp` tests `Geometry.h`, so you can look at them for examples. |
+| `Tests/` | Unit tests. There is one file for each game you can choose (e.g. `tetris_test.cpp`), with finished tests for the rules already in the class, and two unfinished ones for you: your tests go in that file. `test.cpp` tests Xonix's classes and `geometry_test.cpp` tests `Geometry.h`, so you can look at them for examples. |
 
 ### Reading the game code
 
@@ -81,6 +81,8 @@ The game files have comments to help you find your way around:
 - `// ===== GUIDE` at the top: where to start reading, what state survives between frames, and the refactorings to look for
 - `// ---- SETUP / INPUT / UPDATE / DRAW ----`: the big jobs in each game loop
 - `// HINT:` things worth looking at closely, often with the debugger
+- `HALF-SPLIT` in the guide and in your class's header: which rules have already moved into the class, and which are still in the game file
+- `SCAFFOLD` in your class: a method that only exists so the game file can reach the class's data while some rules are still outside. Delete it when nothing needs it.
 
 ### The ✔ or ✘ on GitHub
 
