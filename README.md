@@ -49,12 +49,12 @@ Use the IDE, not the command line. You need Visual Studio 2022 with the **Deskto
 
 ### Command line (Linux, macOS, or Windows without Visual Studio)
 
-You need CMake 3.21+, a C++17 compiler and Git.
+You need CMake 3.25+, Ninja, a C++17 compiler and Git (without Ninja, see [BUILDING.md](https://github.com/kenpower/SFML_Game_Refactor_Test_Worksheet/blob/main/BUILDING.md#without-presets)).
 
 ```sh
-cmake --workflow --preset default    # configure, build and run the tests (Release, in build/)
-cmake --workflow --preset debug      # the same for Debug, in build-debug/
-ctest --test-dir build -C Release --output-on-failure    # run the tests again
+cmake --workflow --preset debug      # configure, build and run the tests (Debug, in build-debug/)
+cmake --workflow --preset release    # the same for Release, in build/
+ctest --preset debug                 # run the tests again
 ```
 
 In VS Code, use the CMake Tools extension: pick a preset, then use its Build, Debug and Test buttons in the status bar.
